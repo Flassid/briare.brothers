@@ -55,11 +55,11 @@ html {
   background-clip: text;
 }
 
-/* Glass morphism effect */
+/* Glass morphism effect - Ultra transparent for 3D visibility */
 .glass {
-  background: rgba(255, 255, 255, 0.02);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 /* Animated gradient background */
@@ -76,18 +76,15 @@ html {
 }
 
 .animated-gradient {
-  background: linear-gradient(
-    -45deg,
-    #000000,
-    #0a0a14,
-    #0d1117,
-    #050510
-  );
-  background-size: 400% 400%;
-  animation: gradient-shift 15s ease infinite;
+  background: transparent;
 }
 
 /* More transparent sections for better 3D visibility */
 section {
+  background: transparent !important;
+}
+
+/* Ensure main container is transparent */
+main {
   background: transparent !important;
 }
