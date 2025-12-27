@@ -57,9 +57,9 @@ html {
 
 /* Glass morphism effect */
 .glass {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 /* Animated gradient background */
@@ -78,11 +78,16 @@ html {
 .animated-gradient {
   background: linear-gradient(
     -45deg,
-    #0a0a0a,
-    #1a1a2e,
-    #16213e,
-    #0f3460
+    #000000,
+    #0a0a14,
+    #0d1117,
+    #050510
   );
   background-size: 400% 400%;
   animation: gradient-shift 15s ease infinite;
+}
+
+/* More transparent sections for better 3D visibility */
+section {
+  background: transparent !important;
 }
