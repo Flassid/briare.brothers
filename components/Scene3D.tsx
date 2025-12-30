@@ -7,16 +7,6 @@ import * as THREE from 'three';
 // Extend Three.js Line to avoid SVG line conflict
 extend({ ThreeLine: THREE.Line });
 
-declare module '@react-three/fiber' {
-  interface ThreeElements {
-    threeLine: React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & {
-      ref?: React.Ref<THREE.Line>;
-      geometry?: THREE.BufferGeometry;
-      children?: React.ReactNode;
-    };
-  }
-}
-
 // Subtle floating particles
 function MinimalParticles({ count = 20 }: { count?: number }) {
   const points = useRef<THREE.Points>(null);
@@ -322,6 +312,7 @@ function ElectricTendril({ index, chargeRatio, time }: {
   if (chargeRatio < 0.1) return null;
 
   return (
+    // @ts-ignore - R3F extended element
     <threeLine ref={lineRef} geometry={geometry}>
       <lineBasicMaterial color="#22d3ee" transparent opacity={0} linewidth={2} />
     </threeLine>
@@ -636,11 +627,16 @@ function ElectricNode({ id, onComplete, onHit, disabled, onProgress }: {
     }
   });
 
+  // @ts-ignore - R3F extended element
+  const lineElement = (
+    <threeLine ref={arcRef} geometry={arcGeometry}>
+      <lineBasicMaterial color="#22d3ee" transparent opacity={0} linewidth={2} />
+    </threeLine>
+  );
+
   return (
     <group>
-      <threeLine ref={arcRef} geometry={arcGeometry}>
-        <lineBasicMaterial color="#22d3ee" transparent opacity={0} linewidth={2} />
-      </threeLine>
+      {lineElement}
     </group>
   );
 }
