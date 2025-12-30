@@ -7,11 +7,13 @@ import * as THREE from 'three';
 // Extend Three.js Line to avoid SVG line conflict
 extend({ ThreeLine: THREE.Line });
 
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      threeLine: JSX.IntrinsicElements['mesh'] & { geometry?: THREE.BufferGeometry };
-    }
+declare module '@react-three/fiber' {
+  interface ThreeElements {
+    threeLine: React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & {
+      ref?: React.Ref<THREE.Line>;
+      geometry?: THREE.BufferGeometry;
+      children?: React.ReactNode;
+    };
   }
 }
 
