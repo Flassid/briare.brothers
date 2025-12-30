@@ -1,8 +1,19 @@
 'use client';
 
-import { Canvas, useFrame, useThree } from '@react-three/fiber';
+import { Canvas, useFrame, useThree, extend } from '@react-three/fiber';
 import { useRef, useState, useEffect, Suspense, useMemo, useCallback } from 'react';
 import * as THREE from 'three';
+
+// Extend Three.js Line to avoid SVG line conflict
+extend({ ThreeLine: THREE.Line });
+
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      threeLine: JSX.IntrinsicElements['mesh'] & { geometry?: THREE.BufferGeometry };
+    }
+  }
+}
 
 // Subtle floating particles
 function MinimalParticles({ count = 20 }: { count?: number }) {
@@ -309,9 +320,9 @@ function ElectricTendril({ index, chargeRatio, time }: {
   if (chargeRatio < 0.1) return null;
 
   return (
-    <line ref={lineRef} geometry={geometry}>
+    <threeLine ref={lineRef} geometry={geometry}>
       <lineBasicMaterial color="#22d3ee" transparent opacity={0} linewidth={2} />
-    </line>
+    </threeLine>
   );
 }
 
@@ -625,9 +636,9 @@ function ElectricNode({ id, onComplete, onHit, disabled, onProgress }: {
 
   return (
     <group>
-      <line ref={arcRef} geometry={arcGeometry}>
+      <threeLine ref={arcRef} geometry={arcGeometry}>
         <lineBasicMaterial color="#22d3ee" transparent opacity={0} linewidth={2} />
-      </line>
+      </threeLine>
     </group>
   );
 }
