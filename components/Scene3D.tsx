@@ -1,11 +1,9 @@
 'use client';
 
-import { Canvas, useFrame, useThree, extend } from '@react-three/fiber';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { useRef, useState, useEffect, Suspense, useMemo, useCallback } from 'react';
 import * as THREE from 'three';
 
-// Extend Three.js Line to avoid SVG line conflict
-extend({ ThreeLine: THREE.Line });
 
 // Subtle floating particles
 function MinimalParticles({ count = 20 }: { count?: number }) {
@@ -262,9 +260,7 @@ function ElectricTendril({ index, chargeRatio, time }: {
   chargeRatio: number;
   time: number;
 }) {
-  const lineRef = useRef<THREE.Line>(null);
-
-  const geometry = useMemo(() => {
+  const lineObj = useMemo(() => {
     const points: THREE.Vector3[] = [];
     const segments = 30;
     const baseRadius = 0.6;
@@ -282,12 +278,14 @@ function ElectricTendril({ index, chargeRatio, time }: {
       ));
     }
 
-    return new THREE.BufferGeometry().setFromPoints(points);
+    const geometry = new THREE.BufferGeometry().setFromPoints(points);
+    const material = new THREE.LineBasicMaterial({ color: '#22d3ee', transparent: true, opacity: 0 });
+    return new THREE.Line(geometry, material);
   }, [index]);
 
   useFrame(() => {
-    if (lineRef.current && lineRef.current.geometry) {
-      const positions = lineRef.current.geometry.attributes.position;
+    if (lineObj && lineObj.geometry) {
+      const positions = lineObj.geometry.attributes.position;
       const segments = positions.count;
 
       for (let i = 0; i < segments; i++) {
@@ -305,18 +303,13 @@ function ElectricTendril({ index, chargeRatio, time }: {
       }
 
       positions.needsUpdate = true;
-      (lineRef.current.material as THREE.LineBasicMaterial).opacity = chargeRatio * 0.8;
+      (lineObj.material as THREE.LineBasicMaterial).opacity = chargeRatio * 0.8;
     }
   });
 
   if (chargeRatio < 0.1) return null;
 
-  return (
-    // @ts-ignore - R3F extended element
-    <threeLine ref={lineRef} geometry={geometry}>
-      <lineBasicMaterial color="#22d3ee" transparent opacity={0} linewidth={2} />
-    </threeLine>
-  );
+  return <primitive object={lineObj} />;
 }
 
 // Swirling electric orb
@@ -536,7 +529,6 @@ function ElectricNode({ id, onComplete, onHit, disabled, onProgress }: {
   disabled: boolean;
   onProgress: (id: number, x: number, z: number, progress: number, isDischarging: boolean) => void;
 }) {
-  const arcRef = useRef<THREE.Line>(null);
   const startTimeRef = useRef(0);
   const hasHitRef = useRef(false);
   const phaseRef = useRef<'buildup' | 'discharge' | 'fade'>('buildup');
@@ -552,7 +544,7 @@ function ElectricNode({ id, onComplete, onHit, disabled, onProgress }: {
   const dischargeDuration = 0.25;
   const fadeDuration = 0.4;
 
-  const arcGeometry = useMemo(() => {
+  const arcLine = useMemo(() => {
     const points: THREE.Vector3[] = [];
     const segments = 16;
 
@@ -571,7 +563,9 @@ function ElectricNode({ id, onComplete, onHit, disabled, onProgress }: {
       points.push(new THREE.Vector3(x + jitterX, y + jitterY, z + jitterZ));
     }
 
-    return new THREE.BufferGeometry().setFromPoints(points);
+    const geometry = new THREE.BufferGeometry().setFromPoints(points);
+    const material = new THREE.LineBasicMaterial({ color: '#22d3ee', transparent: true, opacity: 0 });
+    return new THREE.Line(geometry, material);
   }, [startPos.x, startPos.z]);
 
   useFrame((state) => {
@@ -588,19 +582,16 @@ function ElectricNode({ id, onComplete, onHit, disabled, onProgress }: {
       return;
     }
 
-    let buildupProgress = 0;
     let dischargeProgress = 0;
     let fadeProgress = 0;
-    let isDischarging = false;
 
     if (elapsed < buildupDuration) {
       phaseRef.current = 'buildup';
-      buildupProgress = elapsed / buildupDuration;
+      const buildupProgress = elapsed / buildupDuration;
       onProgress(id, startPos.x, startPos.z, buildupProgress, false);
     } else if (elapsed < buildupDuration + dischargeDuration) {
       phaseRef.current = 'discharge';
       dischargeProgress = (elapsed - buildupDuration) / dischargeDuration;
-      isDischarging = true;
       onProgress(id, startPos.x, startPos.z, 1, true);
 
       if (!hasHitRef.current && !disabled) {
@@ -613,30 +604,21 @@ function ElectricNode({ id, onComplete, onHit, disabled, onProgress }: {
       onProgress(id, startPos.x, startPos.z, 1 - fadeProgress, false);
     }
 
-    if (arcRef.current) {
-      let opacity = 0;
+    let opacity = 0;
 
-      if (phaseRef.current === 'discharge' && !disabled) {
-        const flicker = Math.random() > 0.1 ? 1 : 0.3;
-        opacity = Math.sin(dischargeProgress * Math.PI) * 0.9 * flicker;
-      } else if (phaseRef.current === 'fade' && !disabled) {
-        opacity = 0.4 * (1 - fadeProgress) * (Math.random() > 0.2 ? 1 : 0.2);
-      }
-
-      (arcRef.current.material as THREE.LineBasicMaterial).opacity = opacity;
+    if (phaseRef.current === 'discharge' && !disabled) {
+      const flicker = Math.random() > 0.1 ? 1 : 0.3;
+      opacity = Math.sin(dischargeProgress * Math.PI) * 0.9 * flicker;
+    } else if (phaseRef.current === 'fade' && !disabled) {
+      opacity = 0.4 * (1 - fadeProgress) * (Math.random() > 0.2 ? 1 : 0.2);
     }
-  });
 
-  // @ts-ignore - R3F extended element
-  const lineElement = (
-    <threeLine ref={arcRef} geometry={arcGeometry}>
-      <lineBasicMaterial color="#22d3ee" transparent opacity={0} linewidth={2} />
-    </threeLine>
-  );
+    (arcLine.material as THREE.LineBasicMaterial).opacity = opacity;
+  });
 
   return (
     <group>
-      {lineElement}
+      <primitive object={arcLine} />
     </group>
   );
 }
