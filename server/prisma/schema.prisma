@@ -1,0 +1,133 @@
+// Prisma Schema for Dungeon.AI
+// SQLite database (for development)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+// ==========================================
+// User & Authentication
+// ==========================================
+
+model User {
+  id           String   @id @default(cuid())
+  username     String   @unique
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  ownedCampaigns Campaign[] @relation("CampaignOwner")
+  players        Player[]
+  messages       Message[]
+}
+
+// ==========================================
+// Campaign & Game
+// ==========================================
+
+model Campaign {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  inviteCode  String   @unique
+  status      String   @default("LOBBY")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  dmId      String
+  dm        User       @relation("CampaignOwner", fields: [dmId], references: [id], onDelete: Cascade)
+  players   Player[]
+  scenes    Scene[]
+  messages  Message[]
+  gameState GameState?
+}
+
+// ==========================================
+// Players in Campaign
+// ==========================================
+
+model Player {
+  id             String  @id @default(cuid())
+  characterName  String?
+  characterClass String?
+  characterRace  String?
+  characterLevel Int     @default(1)
+  portraitUrl    String?
+  stats          String? // JSON string for stats
+  isReady        Boolean @default(false)
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  campaignId String
+  campaign   Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages   Message[]
+
+  @@unique([campaignId, userId])
+}
+
+// ==========================================
+// Scenes (Story/Location in campaign)
+// ==========================================
+
+model Scene {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  imageUrl    String?
+  order       Int      @default(0)
+  isActive    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  campaignId String
+  campaign   Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+}
+
+// ==========================================
+// Messages (Chat, Narrative, Dice Rolls)
+// ==========================================
+
+model Message {
+  id        String   @id @default(cuid())
+  content   String
+  type      String   @default("CHAT")
+  createdAt DateTime @default(now())
+
+  // Relations
+  campaignId String
+  campaign   Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  playerId   String?
+  player     Player?  @relation(fields: [playerId], references: [id], onDelete: SetNull)
+  userId     String?
+  user       User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+}
+
+// ==========================================
+// Game State (Turn order, combat, etc.)
+// ==========================================
+
+model GameState {
+  id           String   @id @default(cuid())
+  turnOrder    String   @default("[]") // JSON string
+  currentTurn  Int      @default(0)
+  combatActive Boolean  @default(false)
+  stateJson    String?  // JSON string
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  campaignId String   @unique
+  campaign   Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+}

@@ -1,0 +1,98 @@
+{
+  "project": "Dungeon.AI",
+  "version": "0.1.0",
+  "currentPhase": 2,
+  "phases": {
+    "1": {
+      "name": "Foundation",
+      "status": "complete"
+    },
+    "2": {
+      "name": "AI Dungeon Master",
+      "status": "complete",
+      "tasks": {
+        "dm-service": {
+          "name": "DM Service Architecture",
+          "status": "complete",
+          "description": "Core service structure for AI DM",
+          "files": [
+            "server/services/dm/DungeonMaster.ts",
+            "server/services/dm/ClaudeClient.ts",
+            "server/services/dm/types.ts",
+            "server/services/dm/index.ts"
+          ]
+        },
+        "system-prompts": {
+          "name": "System Prompts",
+          "status": "complete",
+          "description": "Narrative, combat, and NPC dialogue prompts",
+          "files": [
+            "server/services/dm/prompts/narrative.ts",
+            "server/services/dm/prompts/combat.ts",
+            "server/services/dm/prompts/npc.ts",
+            "server/services/dm/prompts/character.ts",
+            "server/services/dm/prompts/encounter.ts",
+            "server/services/dm/prompts/scene.ts"
+          ]
+        },
+        "character-gen": {
+          "name": "Character Generation",
+          "status": "complete",
+          "description": "Natural language to character stats + backstory",
+          "files": ["server/services/dm/CharacterGenerator.ts"]
+        },
+        "narrative-engine": {
+          "name": "Narrative Engine",
+          "status": "complete",
+          "description": "Scene descriptions, branching choices, world state",
+          "files": ["server/services/dm/NarrativeEngine.ts"]
+        },
+        "combat-system": {
+          "name": "Natural Language Combat",
+          "status": "complete",
+          "description": "Creative action interpretation and resolution",
+          "files": ["server/services/dm/CombatResolver.ts"]
+        },
+        "encounter-gen": {
+          "name": "Encounter Generation",
+          "status": "complete",
+          "description": "Dynamic enemies, loot, traps, puzzles",
+          "files": ["server/services/dm/EncounterGenerator.ts"]
+        },
+        "npc-system": {
+          "name": "NPC System",
+          "status": "complete",
+          "description": "Personalities, memory, and relationships",
+          "files": ["server/services/dm/NPCManager.ts"]
+        }
+      }
+    },
+    "3": {
+      "name": "Multiplayer & Real-time",
+      "status": "planned",
+      "tasks": {
+        "websocket": {
+          "name": "WebSocket Integration",
+          "status": "partial",
+          "description": "Basic Socket.io setup in server/index.ts, needs expansion"
+        },
+        "party-management": {
+          "name": "Party Management",
+          "status": "pending"
+        },
+        "turn-based": {
+          "name": "Turn-Based Combat Flow",
+          "status": "pending"
+        },
+        "narrative-sync": {
+          "name": "Real-time Narrative Sync",
+          "status": "pending"
+        }
+      }
+    },
+    "4": {
+      "name": "Polish & Launch",
+      "status": "planned"
+    }
+  }
+}
