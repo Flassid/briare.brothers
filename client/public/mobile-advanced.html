@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dungeon.AI - Mobile Adventure</title>
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #1a1a2e;
+            --text-light: #e0e0e0;
+            --accent-gold: #ffd700;
+            --accent-red: #e94560;
+            --panel-bg: #16213e;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 15px;
+        }
+        #game-container {
+            background-color: var(--panel-bg);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+        #narrative {
+            height: 300px;
+            overflow-y: auto;
+            border: 2px solid var(--accent-gold);
+            padding: 15px;
+            margin-bottom: 15px;
+            background-color: rgba(0,0,0,0.3);
+            font-family: 'Cinzel', serif;
+        }
+        .character-creation {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        input, select, button {
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 6px;
+            border: none;
+        }
+        button {
+            background-color: var(--accent-gold);
+            color: var(--bg-dark);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        button:hover {
+            background-color: var(--accent-red);
+            color: white;
+        }
+        #action-input {
+            width: 100%;
+            margin-top: 15px;
+        }
+        .thinking-indicator {
+            text-align: center;
+            color: var(--accent-gold);
+            display: none;
+        }
+        .connection-status {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 10px;
+            text-align: center;
+            background-color: rgba(0,0,0,0.7);
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <div id="connection-panel">
+            <h1>🎲 Dungeon.AI</h1>
+            <input type="text" id="server-url" placeholder="Server URL" value="https://married-cia-practice-say.trycloudflare.com">
+            <button onclick="connectServer()">Connect to Server</button>
+        </div>
+
+        <div id="character-creation" style="display:none;" class="character-creation">
+            <h2>Create Your Character</h2>
+            <input type="text" id="character-name" placeholder="Character Name">
+            <select id="character-race">
+                <option value="">Select Race</option>
+                <option value="Human">Human</option>
+                <option value="Elf">Elf</option>
+                <option value="Dwarf">Dwarf</option>
+                <option value="Halfling">Halfling</option>
+            </select>
+            <select id="character-class">
+                <option value="">Select Class</option>
+                <option value="Warrior">Warrior</option>
+                <option value="Wizard">Wizard</option>
+                <option value="Rogue">Rogue</option>
+                <option value="Cleric">Cleric</option>
+            </select>
+            <button onclick="createCharacter()">Create Character</button>
+        </div>
+
+        <div id="game-panel" style="display:none;">
+            <div id="narrative"></div>
+            <div class="thinking-indicator">🧙‍♂️ The Dungeon Master is thinking...</div>
+            <input type="text" id="action-input" placeholder="Describe your action...">
+            <button onclick="sendAction()">Take Action</button>
+        </div>
+    </div>
+
+    <div class="connection-status" id="connection-status">Disconnected</div>
+
+    <script>
+        let socket;
+        const narrativeEl = document.getElementById('narrative');
+        const connectionPanel = document.getElementById('connection-panel');
+        const characterCreation = document.getElementById('character-creation');
+        const gamePanel = document.getElementById('game-panel');
+        const connectionStatus = document.getElementById('connection-status');
+        const thinkingIndicator = document.querySelector('.thinking-indicator');
+
+        function log(message, type = 'default') {
+            const messageEl = document.createElement('div');
+            messageEl.textContent = message;
+            if (type === 'dm') {
+                messageEl.style.color = '#ffd700';  // Gold for DM messages
+                messageEl.style.fontStyle = 'italic';
+            } else if (type === 'player') {
+                messageEl.style.color = '#e94560';  // Red for player actions
+            }
+            narrativeEl.appendChild(messageEl);
+            narrativeEl.scrollTop = narrativeEl.scrollHeight;
+        }
+
+        function updateConnectionStatus(status) {
+            connectionStatus.textContent = status;
+        }
+
+        function connectServer() {
+            const serverUrl = document.getElementById('server-url').value;
+            updateConnectionStatus(`Connecting to ${serverUrl}...`);
+
+            socket = io(serverUrl, {
+                transports: ['websocket', 'polling']
+            });
+
+            socket.on('connect', () => {
+                log('✅ Connected to Dungeon.AI Server!', 'dm');
+                updateConnectionStatus('Connected');
+                connectionPanel.style.display = 'none';
+                characterCreation.style.display = 'flex';
+            });
+
+            socket.on('connect_error', (error) => {
+                log(`❌ Connection Error: ${error}`, 'dm');
+                updateConnectionStatus('Connection Failed');
+            });
+
+            socket.on('dungeon:pregenerated', () => {
+                log('🏰 Dungeon pre-generated', 'dm');
+            });
+
+            socket.on('game:state', (state) => {
+                log('🎮 Game State Updated', 'dm');
+                // Future: Visualize game state
+            });
+
+            socket.on('dm:narrate', (narration) => {
+                thinkingIndicator.style.display = 'none';
+                log(narration.content, 'dm');
+            });
+
+            socket.on('dm:thinking', () => {
+                thinkingIndicator.style.display = 'block';
+            });
+        }
+
+        function createCharacter() {
+            const name = document.getElementById('character-name').value;
+            const race = document.getElementById('character-race').value;
+            const characterClass = document.getElementById('character-class').value;
+
+            if (!name || !race || !characterClass) {
+                log('Please fill out all character details!', 'dm');
+                return;
+            }
+
+            log(`Creating ${name} the ${race} ${characterClass}`, 'player');
+            
+            socket.emit('dungeon:pregenerate');
+            socket.emit('game:init', { 
+                name, 
+                race, 
+                class: characterClass 
+            });
+
+            characterCreation.style.display = 'none';
+            gamePanel.style.display = 'block';
+        }
+
+        function sendAction() {
+            const actionInput = document.getElementById('action-input');
+            const action = actionInput.value;
+
+            if (!action) return;
+
+            log(`You attempt: ${action}`, 'player');
+            socket.emit('player:action', { action });
+            actionInput.value = '';
+            thinkingIndicator.style.display = 'block';
+        }
+    </script>
+</body>
+</html>

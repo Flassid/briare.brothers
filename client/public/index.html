@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dungeon.AI</title>
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { 
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); 
+            color: #e0e0e0;
+            font-family: Arial, sans-serif;
+        }
+    </style>
+</head>
+<body class="h-screen flex items-center justify-center">
+    <div id="app" class="w-full max-w-xl p-6 bg-[#16213e] rounded-lg shadow-xl">
+        <div id="connection-panel">
+            <h1 class="text-3xl font-bold mb-4 text-center">🎲 Dungeon.AI</h1>
+            <input 
+                type="text" 
+                id="serverUrl" 
+                class="w-full p-2 mb-4 bg-[#0f3460] text-white rounded"
+                placeholder="Server URL" 
+                value="https://married-cia-practice-say.trycloudflare.com"
+            >
+            <button 
+                onclick="connectSocket()"
+                class="w-full p-2 bg-[#e94560] text-white rounded hover:bg-[#bd3044] transition"
+            >
+                Connect to Server
+            </button>
+        </div>
+
+        <div id="character-panel" style="display:none;">
+            <h2 class="text-2xl mb-4 text-center">Create Your Character</h2>
+            <input 
+                type="text" 
+                id="playerName" 
+                class="w-full p-2 mb-2 bg-[#0f3460] text-white rounded" 
+                placeholder="Character Name"
+            >
+            <select 
+                id="playerRace" 
+                class="w-full p-2 mb-2 bg-[#0f3460] text-white rounded"
+            >
+                <option value="Human">Human</option>
+                <option value="Elf">Elf</option>
+                <option value="Dwarf">Dwarf</option>
+            </select>
+            <select 
+                id="playerClass" 
+                class="w-full p-2 mb-2 bg-[#0f3460] text-white rounded"
+            >
+                <option value="Warrior">Warrior</option>
+                <option value="Wizard">Wizard</option>
+                <option value="Rogue">Rogue</option>
+            </select>
+            <button 
+                onclick="createCharacter()"
+                class="w-full p-2 bg-[#e94560] text-white rounded hover:bg-[#bd3044] transition"
+            >
+                Create Character
+            </button>
+        </div>
+
+        <div id="game-panel" style="display:none;">
+            <div 
+                id="narrative" 
+                class="h-64 overflow-y-auto p-4 mb-4 bg-[#0f3460] rounded border border-[#e94560]"
+            ></div>
+            
+            <div class="flex">
+                <input 
+                    type="text" 
+                    id="playerInput" 
+                    class="flex-grow p-2 mr-2 bg-[#0f3460] text-white rounded"
+                    placeholder="What do you do?"
+                >
+                <button 
+                    onclick="sendAction()"
+                    class="px-4 bg-[#e94560] text-white rounded hover:bg-[#bd3044] transition"
+                >
+                    Act
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let socket;
+        const connectionPanel = document.getElementById('connection-panel');
+        const characterPanel = document.getElementById('character-panel');
+        const gamePanel = document.getElementById('game-panel');
+        const narrativeEl = document.getElementById('narrative');
+
+        function log(message) {
+            const messageEl = document.createElement('div');
+            messageEl.textContent = message;
+            narrativeEl.appendChild(messageEl);
+            narrativeEl.scrollTop = narrativeEl.scrollHeight;
+        }
+
+        function connectSocket() {
+            const serverUrl = document.getElementById('serverUrl').value;
+            log(`Connecting to ${serverUrl}...`);
+
+            socket = io(serverUrl, {
+                transports: ['websocket', 'polling']
+            });
+
+            socket.on('connect', () => {
+                log('✅ Connected to server!');
+                connectionPanel.style.display = 'none';
+                characterPanel.style.display = 'block';
+            });
+
+            socket.on('dungeon:pregenerated', () => {
+                log('🏰 Dungeon pre-generated');
+            });
+
+            socket.on('game:init', (data) => {
+                log(`🎮 Game initialized for ${data.name}`);
+            });
+
+            socket.on('game:state', (state) => {
+                log('📊 Game state updated');
+            });
+
+            socket.on('dm:narrate', (narration) => {
+                log(`📜 ${narration.content}`);
+            });
+
+            socket.on('connect_error', (error) => {
+                log(`❌ Connection error: ${error}`);
+            });
+        }
+
+        function createCharacter() {
+            const name = document.getElementById('playerName').value;
+            const race = document.getElementById('playerRace').value;
+            const characterClass = document.getElementById('playerClass').value;
+
+            log(`Creating ${name} the ${race} ${characterClass}`);
+            
+            socket.emit('dungeon:pregenerate');
+            socket.emit('game:init', { 
+                name, 
+                race, 
+                class: characterClass 
+            });
+
+            characterPanel.style.display = 'none';
+            gamePanel.style.display = 'block';
+        }
+
+        function sendAction() {
+            const input = document.getElementById('playerInput');
+            const action = input.value;
+            
+            if (action) {
+                log(`🎲 You attempt: ${action}`);
+                socket.emit('player:action', { action });
+                input.value = '';
+            }
+        }
+    </script>
+</body>
+</html>

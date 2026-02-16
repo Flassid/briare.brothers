@@ -105,6 +105,11 @@ interface GameState {
 // Store for the player sprite image
 let playerSpriteImage: HTMLImageElement | null = null;
 
+// Add null check helper
+function isValidImage(img: HTMLImageElement | null): img is HTMLImageElement {
+  return img !== null && img.complete && img.src !== '';
+}
+
 // Draw placeholder for player
 function drawPlayerPlaceholder(ctx: CanvasRenderingContext2D, px: number, py: number, charClass?: string) {
   const cx = px + TILE_SIZE / 2;
@@ -291,7 +296,7 @@ export function PhaserGame() {
     const spriteSize = TILE_SIZE * 2 * breathScale;
     const spriteOffset = (TILE_SIZE * 2 - spriteSize) / 2;
     
-    if (spriteUrl && playerSpriteImage?.src === spriteUrl && playerSpriteImage.complete) {
+    if (spriteUrl && isValidImage(playerSpriteImage) && playerSpriteImage.src === spriteUrl) {
       // Draw the loaded sprite with breathing animation
       ctx.drawImage(
         playerSpriteImage, 

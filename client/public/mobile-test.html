@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DungeonAI Mobile Test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            max-width: 600px; 
+            margin: 0 auto; 
+            padding: 20px; 
+            background-color: #1a1a2e;
+            color: #e0e0e0;
+        }
+        #messages { 
+            height: 300px; 
+            overflow-y: scroll; 
+            border: 1px solid #444; 
+            padding: 10px; 
+            margin-bottom: 10px;
+        }
+        input, button { 
+            width: 100%; 
+            padding: 10px; 
+            margin: 10px 0; 
+        }
+    </style>
+</head>
+<body>
+    <h1>🎲 DungeonAI Mobile Test</h1>
+    <div id="messages"></div>
+    <input type="text" id="serverUrl" placeholder="Server URL" value="https://cuisine-vincent-february-manner.trycloudflare.com">
+    <button onclick="connectSocket()">Connect</button>
+    <input type="text" id="actionInput" placeholder="Enter your action">
+    <button onclick="sendAction()">Send Action</button>
+
+    <script>
+        let socket;
+        const messagesDiv = document.getElementById('messages');
+        const serverUrlInput = document.getElementById('serverUrl');
+        const actionInput = document.getElementById('actionInput');
+
+        function log(message) {
+            const messageEl = document.createElement('div');
+            messageEl.textContent = message;
+            messagesDiv.appendChild(messageEl);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function connectSocket() {
+            const serverUrl = serverUrlInput.value;
+            log(`Connecting to: ${serverUrl}`);
+
+            // Disconnect existing socket if any
+            if (socket) {
+                socket.disconnect();
+            }
+
+            socket = io(serverUrl, {
+                transports: ['websocket', 'polling']
+            });
+
+            socket.on('connect', () => {
+                log('✅ Connected to server!');
+                
+                // Automatically try to initialize game
+                socket.emit('dungeon:pregenerate');
+            });
+
+            socket.on('dungeon:pregenerated', () => {
+                log('🏰 Dungeon pre-generated');
+                
+                // Prompt for character creation
+                socket.emit('game:init', {
+                    name: 'PhoneTest',
+                    race: 'Human',
+                    class: 'Warrior'
+                });
+            });
+
+            socket.on('game:state', (state) => {
+                log('🎮 Game State Received');
+                log(JSON.stringify(state, null, 2));
+            });
+
+            socket.on('dm:narrate', (narration) => {
+                log('📜 DM Says: ' + narration.content);
+            });
+
+            socket.on('connect_error', (error) => {
+                log('❌ Connection Error: ' + error);
+            });
+        }
+
+        function sendAction() {
+            const action = actionInput.value;
+            if (socket && action) {
+                log(`🎲 Sending Action: ${action}`);
+                socket.emit('player:action', { action: action });
+                actionInput.value = '';
+            }
+        }
+    </script>
+</body>
+</html>
