@@ -59,7 +59,7 @@ export default function AboutSection() {
               { label: 'Structure', value: 'Wyoming LLC' },
               { label: 'Team', value: '2 founders' },
               { label: 'Funding', value: 'Bootstrapped' },
-              { label: 'Products', value: '6 shipped' },
+              { label: 'Products', value: '5 shipped' },
               { label: 'North Star', value: '$1M revenue' },
             ].map((item, i) => (
               <motion.div
