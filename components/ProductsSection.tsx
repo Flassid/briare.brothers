@@ -75,16 +75,17 @@ const products = [
     title: 'MTGDB',
     tagline: 'Magic: The Gathering Card Database',
     description:
-      'Cross-platform MTG companion app. Full offline card database powered by Scryfall data, collection tracking, deck building, playtesting, and life tracking. Local-first with Firebase sync.',
-    status: 'IN DEV',
-    statusClass: 'text-purple-400',
-    dotClass: 'dot-dev',
-    accent: '#a855f7',
+      'Cross-platform MTG companion app with 80,000+ cards available offline. Collection tracking, deck building, life tracker, dice roller, cloud sync, and TCGPlayer price tracking. 10K+ downloads.',
+    status: 'LIVE',
+    statusClass: 'text-green-400',
+    dotClass: 'dot-live',
+    accent: '#22c55e',
     tags: ['Flutter', 'Firebase', 'SQLite', 'iOS', 'Android'],
     size: 'small',
     github: null,
-    link: null,
-    metric: { value: 'iOS + Android', label: 'cross-platform' },
+    link: 'https://apps.apple.com/us/app/mtgdb-mtg-card-database/id1515425814',
+    linkAndroid: 'https://play.google.com/store/apps/details?id=com.space.mtgdb',
+    metric: { value: '10K+', label: 'downloads' },
   },
   {
     id: 'echopalace',
@@ -160,23 +161,21 @@ export default function ProductsSection() {
                 </div>
                 <div className="flex items-center gap-2">
                   {p.github && (
-                    <a
-                      href={p.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="p-2 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.06] transition-colors"
-                    >
+                    <a href={p.github} target="_blank" rel="noopener noreferrer"
+                      className="p-2 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.06] transition-colors" title="GitHub">
                       <Github className="w-3.5 h-3.5 text-zinc-400" />
                     </a>
                   )}
                   {p.link && (
-                    <a
-                      href={p.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="p-2 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.06] transition-colors"
-                    >
+                    <a href={p.link} target="_blank" rel="noopener noreferrer"
+                      className="p-2 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.06] transition-colors" title="App Store">
                       <ExternalLink className="w-3.5 h-3.5 text-zinc-400" />
+                    </a>
+                  )}
+                  {(p as any).linkAndroid && (
+                    <a href={(p as any).linkAndroid} target="_blank" rel="noopener noreferrer"
+                      className="p-2 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.06] transition-colors" title="Google Play">
+                      <Smartphone className="w-3.5 h-3.5 text-zinc-400" />
                     </a>
                   )}
                 </div>
