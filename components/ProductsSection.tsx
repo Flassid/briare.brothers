@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
-import { ExternalLink, Github, ArrowUpRight } from 'lucide-react';
+import { ExternalLink, Github, ArrowUpRight, Layers } from 'lucide-react';
 
 const products = [
   {
@@ -53,6 +53,22 @@ const products = [
     github: null,
     link: null,
     metric: { value: '4-player', label: 'online co-op' },
+  },
+  {
+    id: 'mtgdb',
+    title: 'MTGDB',
+    tagline: 'Magic: The Gathering Card Database',
+    description:
+      'Cross-platform MTG companion app. Full offline card database powered by Scryfall data, collection tracking, deck building, playtesting, and life tracking. Local-first with Firebase sync.',
+    status: 'IN DEV',
+    statusClass: 'text-purple-400',
+    dotClass: 'dot-dev',
+    accent: '#a855f7',
+    tags: ['Flutter', 'Firebase', 'SQLite', 'iOS', 'Android'],
+    size: 'small',
+    github: null,
+    link: null,
+    metric: { value: 'iOS + Android', label: 'cross-platform' },
   },
   {
     id: 'echopalace',
