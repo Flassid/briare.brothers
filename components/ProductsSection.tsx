@@ -7,11 +7,11 @@ import { ExternalLink, Github, ArrowUpRight } from 'lucide-react';
 
 const products = [
   {
-    id: 'erewhonpos',
-    title: 'ErewhonPOS',
+    id: 'aboyeur',
+    title: 'Aboyeur',
     tagline: 'AI Kitchen Display System',
     description:
-      'Replaced Erewhon\'s legacy KDS hardware at Beverly Hills with a real-time AI order management system. 16,789+ orders processed without a single failure. Enterprise SaaS deal in motion for all 14 stores.',
+      'Replaced the legacy KDS hardware at a major high-end grocery chain with a real-time AI order management system. 16,789+ orders processed without a single failure. Enterprise SaaS deal in motion for all 14 stores.',
     status: 'LIVE',
     statusClass: 'text-green-400',
     dotClass: 'dot-live',

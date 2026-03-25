@@ -67,7 +67,7 @@ export default function ContactSection() {
           <p className="text-xs uppercase tracking-[0.2em] text-zinc-600 mb-6">Open to</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {[
-              { title: 'Enterprise KDS', desc: 'Restaurants looking to upgrade their kitchen display system with AI.' },
+              { title: 'Aboyeur / KDS', desc: 'Restaurants and food chains looking to upgrade their kitchen display system with AI.' },
               { title: 'Custom AI Software', desc: 'Teams that need AI-native products built fast and built right.' },
               { title: 'Game Projects', desc: 'Interesting multiplayer or physics-heavy game concepts.' },
               { title: 'Partnership', desc: "Complementary builders who want to ship something together." },

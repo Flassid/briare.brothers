@@ -40,7 +40,7 @@ export default function AboutSection() {
             </p>
             <p className="text-zinc-400 leading-relaxed mb-6">
               <strong className="text-white">Ty</strong> handles product and vision — finding real problems worth solving and defining exactly what to build.
-              He's a chef trainer at Erewhon by day, which is how ErewhonPOS was born.
+              He's a chef trainer at a major high-end grocery chain by day, which is how Aboyeur was born.
             </p>
             <p className="text-zinc-400 leading-relaxed">
               <strong className="text-white">Andrew</strong> handles engineering — turning ideas into production systems.
@@ -87,7 +87,7 @@ export default function AboutSection() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
               { num: '01', title: 'Ship fast', desc: 'Working software beats perfect software. We bias toward action and iterate in public.' },
-              { num: '02', title: 'Real problems', desc: "We only build things people actually need. ErewhonPOS exists because Ty watched the old system fail every shift." },
+              { num: '02', title: 'Real problems', desc: "We only build things people actually need. Aboyeur exists because Ty watched the old system fail every shift." },
               { num: '03', title: 'AI-native', desc: "Every product is designed around AI from day one. Not bolted on — baked in." },
               { num: '04', title: 'No fluff', desc: "No investors. No bloat. No account managers. Just two people and the tools we need." },
             ].map((p) => (
