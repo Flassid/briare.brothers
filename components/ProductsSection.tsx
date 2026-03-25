@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
-import { ExternalLink, Github, ArrowUpRight, Layers } from 'lucide-react';
+import { ExternalLink, Github, ArrowUpRight, Layers, Smartphone } from 'lucide-react';
 
 const products = [
   {
@@ -53,6 +53,22 @@ const products = [
     github: null,
     link: null,
     metric: { value: '4-player', label: 'online co-op' },
+  },
+  {
+    id: 'livewallpaper',
+    title: 'Live Wallpaper SDK',
+    tagline: 'Android SDK · Unity Asset Store',
+    description:
+      'Published Unity plugin that lets developers turn any Unity scene into an Android live wallpaper. Available on the Unity Asset Store — drop-in integration with full render pipeline support.',
+    status: 'LIVE',
+    statusClass: 'text-green-400',
+    dotClass: 'dot-live',
+    accent: '#22c55e',
+    tags: ['Unity', 'Android', 'SDK', 'Asset Store'],
+    size: 'small',
+    github: null,
+    link: 'https://assetstore.unity.com/packages/tools/integration/live-wallpaper-sdk-for-android-353384',
+    metric: { value: 'Published', label: 'Unity Asset Store' },
   },
   {
     id: 'mtgdb',

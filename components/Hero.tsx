@@ -89,7 +89,7 @@ export default function Hero() {
           className="mt-24 grid grid-cols-3 gap-px border border-white/[0.06] rounded-2xl overflow-hidden"
         >
           {[
-            { value: '5', label: 'Products Shipped' },
+            { value: '6', label: 'Products Shipped' },
             { value: '32,497+', label: 'Orders Processed' },
             { value: '0', label: 'Outside Funding' },
           ].map((stat, i) => (
