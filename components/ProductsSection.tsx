@@ -3,164 +3,180 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
-import { ExternalLink, Github, Utensils, FolderOpen, Sword, Brain } from 'lucide-react';
+import { ExternalLink, Github, ArrowUpRight } from 'lucide-react';
 
 const products = [
   {
-    icon: Utensils,
+    id: 'erewhonpos',
     title: 'ErewhonPOS',
     tagline: 'AI Kitchen Display System',
     description:
-      'Live at Erewhon Beverly Hills. Replaced legacy KDS hardware with an AI-powered system that processes orders in real-time. 16,789+ orders without a single failure. Enterprise SaaS deal in progress for all 14 stores.',
+      'Replaced Erewhon\'s legacy KDS hardware at Beverly Hills with a real-time AI order management system. 16,789+ orders processed without a single failure. Enterprise SaaS deal in motion for all 14 stores.',
     status: 'LIVE',
-    statusColor: 'bg-green-500/20 text-green-400 border-green-500/30',
-    dotColor: 'bg-green-400',
-    color: 'from-green-500 to-teal-500',
+    statusClass: 'text-green-400',
+    dotClass: 'dot-live',
+    accent: '#22c55e',
     tags: ['Enterprise SaaS', 'React', 'Supabase', 'Real-time'],
-    link: null,
+    size: 'large',
     github: null,
+    link: null,
+    metric: { value: '16,789+', label: 'orders processed' },
   },
   {
-    icon: FolderOpen,
+    id: 'nexus',
     title: 'Nexus Files',
     tagline: 'AI-Powered File Explorer',
     description:
-      'Local-first file manager with AI-powered search, smart tagging, and instant organization. Built with Tauri for native performance. All 5 development phases complete — ready to ship.',
+      'Local-first file manager with AI search, smart tagging, and instant organization. Built with Tauri for native performance. Feature-complete and ready to ship.',
     status: 'BETA',
-    statusColor: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
-    dotColor: 'bg-blue-400',
-    color: 'from-blue-500 to-indigo-500',
+    statusClass: 'text-blue-400',
+    dotClass: 'dot-beta',
+    accent: '#3b82f6',
     tags: ['Tauri', 'Rust', 'React', 'Local-First'],
-    link: null,
+    size: 'small',
     github: 'https://github.com/Flassid/Nexus',
+    link: null,
+    metric: { value: '5/5', label: 'phases complete' },
   },
   {
-    icon: Sword,
+    id: 'stussy',
     title: 'StussyGauntlet',
     tagline: 'Browser Multiplayer Hack-n-Slash',
     description:
-      'Gauntlet Legends-style co-op in the browser — no download, just share a link and go. WoW-style combat, 4-player online, 3D dungeon crawling. "Warrior needs food, badly... and a link to share!"',
+      'Gauntlet Legends in your browser. Share a link, drop into co-op instantly. No download. WoW-style combat, 3D dungeons, 4-player online.',
     status: 'IN DEV',
-    statusColor: 'bg-purple-500/20 text-purple-400 border-purple-500/30',
-    dotColor: 'bg-purple-400',
-    color: 'from-purple-500 to-pink-500',
+    statusClass: 'text-purple-400',
+    dotClass: 'dot-dev',
+    accent: '#a855f7',
     tags: ['Three.js', 'Colyseus', 'React', 'WebGL'],
-    link: null,
+    size: 'small',
     github: null,
+    link: null,
+    metric: { value: '4-player', label: 'online co-op' },
   },
   {
-    icon: Brain,
+    id: 'echopalace',
     title: 'EchoPalace',
     tagline: 'AI Spatial Memory Palace',
     description:
-      'Intent-driven knowledge management as a 3D memory palace. Autonomous AI agents help you capture, organize, and recall everything. Desktop app built for deep knowledge workers.',
+      'Intent-driven knowledge management as a 3D spatial environment. Autonomous AI agents help you capture, organize, and recall anything. Built for deep knowledge workers.',
     status: 'EARLY ACCESS',
-    statusColor: 'bg-orange-500/20 text-orange-400 border-orange-500/30',
-    dotColor: 'bg-orange-400',
-    color: 'from-orange-500 to-amber-500',
+    statusClass: 'text-amber-400',
+    dotClass: 'dot-early',
+    accent: '#f59e0b',
     tags: ['Tauri', 'Three.js', 'LanceDB', 'Ollama'],
-    link: null,
+    size: 'large',
     github: null,
+    link: null,
+    metric: { value: 'Phase 1', label: 'in development' },
   },
 ];
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 32 },
+  show: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] },
+  }),
+};
 
 export default function ProductsSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.1 });
 
   return (
-    <section id="products" className="min-h-screen py-20 relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" ref={ref}>
-        {/* Section Header */}
+    <section id="products" className="py-32 px-6 relative">
+      <div className="max-w-6xl mx-auto" ref={ref}>
+
+        {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-16"
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="mb-16"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 text-sm text-gray-400 mb-6">
-            What We've Built
-          </div>
-          <h2 className="text-4xl md:text-6xl font-bold mb-6">
-            <span className="gradient-text">Our Products</span>
+          <p className="text-xs uppercase tracking-[0.2em] text-zinc-600 mb-4">Products</p>
+          <h2 className="text-4xl md:text-6xl font-black tracking-tighter">
+            <span className="gradient-text">What we've built</span>
           </h2>
-          <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-            From enterprise restaurant tech to multiplayer browser games — we build things that work and ship them.
-          </p>
         </motion.div>
 
-        {/* Products Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {products.map((product, index) => (
+        {/* Bento Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {products.map((p, i) => (
             <motion.div
-              key={product.title}
-              initial={{ opacity: 0, y: 40 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: index * 0.12 }}
-              whileHover={{ y: -6 }}
-              className="glass p-8 rounded-2xl relative overflow-hidden group border border-white/[0.06] hover:border-white/[0.12] transition-all duration-300"
+              key={p.id}
+              custom={i}
+              initial="hidden"
+              animate={isInView ? 'show' : 'hidden'}
+              variants={fadeUp}
+              className="card p-8 relative overflow-hidden group cursor-default"
+              style={{ '--accent': p.accent } as React.CSSProperties}
             >
-              {/* Gradient glow on hover */}
-              <div className={`absolute inset-0 bg-gradient-to-br ${product.color} opacity-0 group-hover:opacity-[0.06] transition-opacity duration-500 rounded-2xl`} />
+              {/* Accent glow on hover */}
+              <div
+                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-2xl"
+                style={{ background: `radial-gradient(ellipse at top left, ${p.accent}12 0%, transparent 60%)` }}
+              />
 
-              {/* Top row: icon + status */}
-              <div className="flex items-start justify-between mb-6 relative z-10">
-                <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${product.color} flex items-center justify-center`}>
-                  <product.icon className="w-7 h-7 text-white" />
+              {/* Top row */}
+              <div className="flex items-start justify-between mb-8 relative z-10">
+                <div className="flex items-center gap-2">
+                  <span className={`w-1.5 h-1.5 rounded-full ${p.dotClass}`} />
+                  <span className={`text-xs font-semibold tracking-wide ${p.statusClass}`}>{p.status}</span>
                 </div>
-                <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs font-semibold tracking-wide ${product.statusColor}`}>
-                  <span className={`w-1.5 h-1.5 rounded-full ${product.dotColor}`} />
-                  {product.status}
+                <div className="flex items-center gap-2">
+                  {p.github && (
+                    <a
+                      href={p.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-2 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.06] transition-colors"
+                    >
+                      <Github className="w-3.5 h-3.5 text-zinc-400" />
+                    </a>
+                  )}
+                  {p.link && (
+                    <a
+                      href={p.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-2 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.06] transition-colors"
+                    >
+                      <ExternalLink className="w-3.5 h-3.5 text-zinc-400" />
+                    </a>
+                  )}
                 </div>
               </div>
 
               {/* Content */}
               <div className="relative z-10">
-                <h3 className="text-2xl font-bold text-white mb-1">{product.title}</h3>
-                <p className={`text-sm font-medium mb-4 bg-gradient-to-r ${product.color} bg-clip-text text-transparent`}>
-                  {product.tagline}
-                </p>
-                <p className="text-gray-400 leading-relaxed mb-6">
-                  {product.description}
-                </p>
+                <h3 className="text-2xl font-black tracking-tight text-white mb-1">{p.title}</h3>
+                <p className="text-sm font-medium mb-5" style={{ color: p.accent }}>{p.tagline}</p>
+                <p className="text-zinc-500 text-sm leading-relaxed mb-8">{p.description}</p>
 
                 {/* Tags */}
-                <div className="flex flex-wrap gap-2 mb-6">
-                  {product.tags.map((tag) => (
-                    <span key={tag} className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-gray-400">
+                <div className="flex flex-wrap gap-2 mb-8">
+                  {p.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="px-2.5 py-1 rounded-md bg-white/[0.04] border border-white/[0.06] text-xs text-zinc-500"
+                    >
                       {tag}
                     </span>
                   ))}
                 </div>
 
-                {/* Links */}
-                <div className="flex gap-3">
-                  {product.link && (
-                    <motion.a
-                      href={product.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className={`flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r ${product.color} text-white text-sm font-medium`}
-                    >
-                      <ExternalLink className="w-4 h-4" />
-                      Visit
-                    </motion.a>
-                  )}
-                  {product.github && (
-                    <motion.a
-                      href={product.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 text-white text-sm font-medium transition-colors"
-                    >
-                      <Github className="w-4 h-4" />
-                      GitHub
-                    </motion.a>
-                  )}
+                {/* Metric */}
+                <div className="pt-6 border-t border-white/[0.06] flex items-end justify-between">
+                  <div>
+                    <div className="text-2xl font-black tracking-tight stat-number" style={{ color: p.accent }}>
+                      {p.metric.value}
+                    </div>
+                    <div className="text-xs text-zinc-600 mt-0.5">{p.metric.label}</div>
+                  </div>
+                  <ArrowUpRight className="w-4 h-4 text-zinc-700 group-hover:text-zinc-400 transition-colors" />
                 </div>
               </div>
             </motion.div>

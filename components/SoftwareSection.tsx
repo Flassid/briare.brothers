@@ -3,147 +3,87 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
-import { Code2, Cpu, Globe, Smartphone, Gamepad2, BrainCircuit } from 'lucide-react';
+import { BrainCircuit, Gamepad2, Globe, Monitor, Server, Code2 } from 'lucide-react';
 
 const services = [
-  {
-    icon: BrainCircuit,
-    title: 'AI Integration',
-    description: 'We build AI-native products — not features slapped on top of existing software.',
-    features: ['LLM Pipelines', 'Vector Search', 'Agent Workflows'],
-    color: 'from-blue-500 to-indigo-500',
-  },
-  {
-    icon: Gamepad2,
-    title: 'Game Development',
-    description: 'Browser-based and desktop games with real physics, multiplayer, and great feel.',
-    features: ['Three.js / WebGL', 'Colyseus Multiplayer', 'Unity'],
-    color: 'from-purple-500 to-pink-500',
-  },
-  {
-    icon: Globe,
-    title: 'Web Platforms',
-    description: 'Modern, fast web apps with pixel-perfect UI and production-grade architecture.',
-    features: ['Next.js', 'React', 'TypeScript'],
-    color: 'from-cyan-500 to-blue-500',
-  },
-  {
-    icon: Smartphone,
-    title: 'Desktop Apps',
-    description: 'Cross-platform native desktop apps that are fast, offline-first, and ship fast.',
-    features: ['Tauri', 'Rust', 'React'],
-    color: 'from-orange-500 to-amber-500',
-  },
-  {
-    icon: Cpu,
-    title: 'Backend Systems',
-    description: 'Scalable APIs, real-time systems, and data pipelines built to handle production load.',
-    features: ['Node.js', 'Supabase', 'PostgreSQL'],
-    color: 'from-green-500 to-teal-500',
-  },
-  {
-    icon: Code2,
-    title: 'Custom Software',
-    description: 'Got a unique problem? We scope it, build it, and ship it. No bloat, no hand-holding.',
-    features: ['Rapid Prototyping', 'Full Stack', 'API Integration'],
-    color: 'from-violet-500 to-purple-500',
-  },
+  { icon: BrainCircuit, title: 'AI Integration', desc: 'LLM pipelines, agent workflows, vector search. AI-native, not AI-bolted-on.', color: '#3b82f6' },
+  { icon: Gamepad2, title: 'Game Dev', desc: 'Browser and desktop games with real physics, multiplayer, and great feel.', color: '#a855f7' },
+  { icon: Globe, title: 'Web Platforms', desc: 'Fast, modern web apps with pixel-perfect UI and production-grade architecture.', color: '#06b6d4' },
+  { icon: Monitor, title: 'Desktop Apps', desc: 'Cross-platform native desktop apps. Fast, offline-first, built with Tauri + Rust.', color: '#f59e0b' },
+  { icon: Server, title: 'Backend Systems', desc: 'Scalable APIs, real-time infra, and data pipelines built to handle production load.', color: '#22c55e' },
+  { icon: Code2, title: 'Custom Builds', desc: "Scope it, build it, ship it. No account managers, no hand-holding.", color: '#ec4899' },
 ];
+
+const stack = ['React', 'Next.js', 'TypeScript', 'Node.js', 'Python', 'Rust', 'Tauri', 'Three.js', 'Supabase', 'PostgreSQL', 'AWS', 'Docker'];
 
 export default function SoftwareSection() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.2 });
+  const isInView = useInView(ref, { once: true, amount: 0.1 });
 
   return (
-    <section id="software" className="min-h-screen py-20 relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" ref={ref}>
-        {/* Section Header */}
+    <section id="software" className="py-32 px-6 relative border-t border-white/[0.04]">
+      <div className="max-w-6xl mx-auto" ref={ref}>
+
+        {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-16"
+          transition={{ duration: 0.6 }}
+          className="mb-16"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 text-sm text-gray-400 mb-6">
-            What We Do
+          <p className="text-xs uppercase tracking-[0.2em] text-zinc-600 mb-4">Services</p>
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+            <h2 className="text-4xl md:text-6xl font-black tracking-tighter">
+              <span className="gradient-text">What we do</span>
+            </h2>
+            <p className="text-zinc-500 max-w-sm text-sm leading-relaxed">
+              We build across the full stack — AI, web, games, and native desktop. If it needs to be built well, we can build it.
+            </p>
           </div>
-          <h2 className="text-4xl md:text-6xl font-bold mb-6">
-            <span className="gradient-text">Services</span>
-          </h2>
-          <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-            We build across the stack — AI, web, games, and desktop. If it needs to be built well, we can build it.
-          </p>
         </motion.div>
 
-        {/* Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {services.map((service, index) => (
+        {/* Services grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-16">
+          {services.map((s, i) => (
             <motion.div
-              key={service.title}
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={isInView ? { opacity: 1, scale: 1 } : {}}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              whileHover={{ y: -8 }}
-              className="glass p-8 rounded-2xl relative overflow-hidden group border border-white/[0.06] hover:border-white/[0.12] transition-all duration-300"
+              key={s.title}
+              initial={{ opacity: 0, y: 24 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
+              className="card p-6 group hover:border-white/[0.14] transition-all"
             >
-              {/* Animated background gradient */}
               <div
-                className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-0 group-hover:opacity-[0.07] transition-opacity duration-500 rounded-2xl`}
-              />
-
-              {/* Icon */}
-              <div
-                className={`w-14 h-14 rounded-xl bg-gradient-to-br ${service.color} flex items-center justify-center mb-6 relative z-10`}
+                className="w-10 h-10 rounded-xl flex items-center justify-center mb-5"
+                style={{ background: `${s.color}18`, border: `1px solid ${s.color}30` }}
               >
-                <service.icon className="w-7 h-7 text-white" />
+                <s.icon className="w-5 h-5" style={{ color: s.color }} />
               </div>
-
-              {/* Content */}
-              <h3 className="text-xl font-bold mb-3 text-white relative z-10">
-                {service.title}
-              </h3>
-              <p className="text-gray-400 mb-6 relative z-10 text-sm leading-relaxed">
-                {service.description}
-              </p>
-
-              {/* Features */}
-              <div className="space-y-2 relative z-10">
-                {service.features.map((feature) => (
-                  <div key={feature} className="flex items-center gap-2">
-                    <div className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${service.color}`} />
-                    <span className="text-sm text-gray-300">{feature}</span>
-                  </div>
-                ))}
-              </div>
+              <h3 className="font-bold text-white mb-2">{s.title}</h3>
+              <p className="text-sm text-zinc-500 leading-relaxed">{s.desc}</p>
             </motion.div>
           ))}
         </div>
 
-        {/* Tech Stack */}
+        {/* Stack */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 0.8 }}
-          className="mt-20"
+          transition={{ duration: 0.6, delay: 0.5 }}
+          className="card p-8"
         >
-          <h3 className="text-3xl font-bold text-center mb-10 gradient-text">
-            Our Stack
-          </h3>
-          <div className="glass p-10 rounded-3xl border border-white/[0.06]">
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
-              {['React', 'Next.js', 'TypeScript', 'Node.js', 'Python', 'Rust', 'Tauri', 'Three.js', 'Supabase', 'PostgreSQL', 'AWS', 'Docker'].map((tech, index) => (
-                <motion.div
-                  key={tech}
-                  initial={{ opacity: 0, scale: 0 }}
-                  animate={isInView ? { opacity: 1, scale: 1 } : {}}
-                  transition={{ delay: index * 0.04 }}
-                  whileHover={{ scale: 1.15 }}
-                  className="flex items-center justify-center p-4 rounded-xl glass hover:bg-white/10 transition-all duration-300 cursor-default border border-white/[0.04] hover:border-white/10"
-                >
-                  <span className="font-medium text-gray-300 text-sm">{tech}</span>
-                </motion.div>
-              ))}
-            </div>
+          <p className="text-xs uppercase tracking-[0.2em] text-zinc-600 mb-6">Our stack</p>
+          <div className="flex flex-wrap gap-3">
+            {stack.map((tech, i) => (
+              <motion.span
+                key={tech}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={isInView ? { opacity: 1, scale: 1 } : {}}
+                transition={{ delay: 0.5 + i * 0.04 }}
+                className="px-3 py-1.5 rounded-lg bg-white/[0.04] border border-white/[0.06] text-sm text-zinc-400 hover:text-white hover:border-white/[0.12] transition-colors cursor-default"
+              >
+                {tech}
+              </motion.span>
+            ))}
           </div>
         </motion.div>
       </div>
