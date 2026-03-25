@@ -1,7 +1,7 @@
 import dynamic from 'next/dynamic';
 import Navigation from '@/components/Navigation';
 import Hero from '@/components/Hero';
-import CryptoSection from '@/components/CryptoSection';
+import ProductsSection from '@/components/ProductsSection';
 import SoftwareSection from '@/components/SoftwareSection';
 import AboutSection from '@/components/AboutSection';
 import ContactSection from '@/components/ContactSection';
@@ -24,10 +24,10 @@ export default function Home() {
       {/* Hero Section */}
       <Hero />
 
-      {/* Crypto Investments Section */}
-      <CryptoSection />
+      {/* Products Section */}
+      <ProductsSection />
 
-      {/* Software Solutions Section */}
+      {/* Services Section */}
       <SoftwareSection />
 
       {/* About Section */}

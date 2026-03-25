@@ -3,28 +3,28 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
-import { Target, Users, Award, Lightbulb } from 'lucide-react';
+import { Rocket, Users, Zap, Target } from 'lucide-react';
 
 const values = [
   {
+    icon: Rocket,
+    title: 'Ship Fast',
+    description: 'Ideas become products. We bias toward execution — working software over endless planning.',
+  },
+  {
     icon: Target,
-    title: 'Mission-Driven',
-    description: 'Empowering clients through innovative technology and strategic investments.',
+    title: 'Real Problems',
+    description: "We build for real users with real pain. ErewhonPOS wasn't a side project — it replaced a broken system live.",
+  },
+  {
+    icon: Zap,
+    title: 'AI-Native',
+    description: 'Every product we build is designed around AI from day one — not bolted on after.',
   },
   {
     icon: Users,
-    title: 'Client-Focused',
-    description: 'Your success is our success. We prioritize long-term relationships.',
-  },
-  {
-    icon: Award,
-    title: 'Excellence',
-    description: 'Committed to delivering exceptional quality in everything we do.',
-  },
-  {
-    icon: Lightbulb,
-    title: 'Innovation',
-    description: 'Constantly pushing boundaries and exploring new opportunities.',
+    title: 'Two Brothers',
+    description: "Small team, huge output. Ty handles product and vision. Andrew handles engineering. No bloat, no BS.",
   },
 ];
 
@@ -41,12 +41,14 @@ export default function AboutSection() {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 text-sm text-gray-400 mb-6">
+            Who We Are
+          </div>
           <h2 className="text-4xl md:text-6xl font-bold mb-6">
             <span className="gradient-text">About Briare Brothers</span>
           </h2>
           <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-            Founded with a vision to bridge traditional finance and cutting-edge technology,
-            Briare Brothers has become a trusted name in crypto investments and software development.
+            A two-person dev studio building AI-powered software and games from the ground up.
           </p>
         </motion.div>
 
@@ -55,53 +57,53 @@ export default function AboutSection() {
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="glass p-10 rounded-3xl mb-16"
+          className="glass p-10 rounded-3xl mb-16 border border-white/[0.06]"
         >
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
               <h3 className="text-3xl font-bold mb-6 gradient-text">Our Story</h3>
               <p className="text-gray-300 mb-4 leading-relaxed">
-                What started as two brothers' passion for blockchain technology and software engineering
-                has evolved into a full-service firm serving clients worldwide.
+                Briare Brothers was born in 2025 with a simple thesis: two people with the right skills
+                can outship a 10-person team if they stay focused and use the right tools.
               </p>
               <p className="text-gray-300 mb-4 leading-relaxed">
-                We combine deep technical expertise with financial acumen to deliver solutions
-                that not only meet but exceed expectations. Our team of experts works tirelessly
-                to stay ahead of market trends and technological innovations.
+                Ty brings product instinct and vision — identifying real problems worth solving, from
+                Erewhon's broken kitchen display system to the gap in AI-powered file management.
+                Andrew brings the engineering muscle to make it real.
               </p>
               <p className="text-gray-300 leading-relaxed">
-                Today, we manage hundreds of millions in crypto assets and have delivered
-                countless software solutions that power businesses across industries.
+                We're a Wyoming LLC, fully bootstrapped, and on a mission to build a million-dollar
+                dev studio — one product at a time.
               </p>
             </div>
             <div className="grid grid-cols-2 gap-4">
               <motion.div
                 whileHover={{ scale: 1.05 }}
-                className="glass p-6 rounded-2xl"
+                className="glass p-6 rounded-2xl border border-white/[0.06]"
               >
-                <div className="text-4xl font-bold gradient-text mb-2">2018</div>
+                <div className="text-4xl font-bold gradient-text mb-2">2025</div>
                 <div className="text-gray-400">Founded</div>
               </motion.div>
               <motion.div
                 whileHover={{ scale: 1.05 }}
-                className="glass p-6 rounded-2xl"
+                className="glass p-6 rounded-2xl border border-white/[0.06]"
               >
-                <div className="text-4xl font-bold gradient-text mb-2">50+</div>
-                <div className="text-gray-400">Team Members</div>
+                <div className="text-4xl font-bold gradient-text mb-2">2</div>
+                <div className="text-gray-400">Founders</div>
               </motion.div>
               <motion.div
                 whileHover={{ scale: 1.05 }}
-                className="glass p-6 rounded-2xl"
+                className="glass p-6 rounded-2xl border border-white/[0.06]"
               >
-                <div className="text-4xl font-bold gradient-text mb-2">40+</div>
-                <div className="text-gray-400">Countries</div>
+                <div className="text-4xl font-bold gradient-text mb-2">4</div>
+                <div className="text-gray-400">Products Shipped</div>
               </motion.div>
               <motion.div
                 whileHover={{ scale: 1.05 }}
-                className="glass p-6 rounded-2xl"
+                className="glass p-6 rounded-2xl border border-white/[0.06]"
               >
-                <div className="text-4xl font-bold gradient-text mb-2">1000+</div>
-                <div className="text-gray-400">Clients</div>
+                <div className="text-4xl font-bold gradient-text mb-2">WY</div>
+                <div className="text-gray-400">Wyoming LLC</div>
               </motion.div>
             </div>
           </div>
@@ -115,18 +117,18 @@ export default function AboutSection() {
               initial={{ opacity: 0, y: 50 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              whileHover={{ y: -10 }}
-              className="glass p-8 rounded-2xl text-center group"
+              whileHover={{ y: -8 }}
+              className="glass p-8 rounded-2xl text-center group border border-white/[0.06] hover:border-white/[0.12] transition-all duration-300"
             >
               <motion.div
                 whileHover={{ rotate: 360 }}
                 transition={{ duration: 0.6 }}
-                className="w-16 h-16 mx-auto mb-6 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center"
+                className="w-14 h-14 mx-auto mb-6 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center"
               >
-                <value.icon className="w-8 h-8 text-white" />
+                <value.icon className="w-7 h-7 text-white" />
               </motion.div>
               <h3 className="text-xl font-bold mb-3">{value.title}</h3>
-              <p className="text-gray-400">{value.description}</p>
+              <p className="text-gray-400 text-sm leading-relaxed">{value.description}</p>
             </motion.div>
           ))}
         </div>

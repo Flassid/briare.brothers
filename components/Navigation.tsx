@@ -9,8 +9,8 @@ export default function Navigation() {
 
   const menuItems = [
     { name: 'Home', href: '#home' },
-    { name: 'Crypto Investments', href: '#crypto' },
-    { name: 'Software Solutions', href: '#software' },
+    { name: 'Products', href: '#products' },
+    { name: 'Services', href: '#software' },
     { name: 'About', href: '#about' },
     { name: 'Contact', href: '#contact' },
   ];
@@ -19,7 +19,7 @@ export default function Navigation() {
     <motion.nav
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      className="fixed top-0 left-0 right-0 z-50 glass"
+      className="fixed top-0 left-0 right-0 z-50 bg-black/60 backdrop-blur-md border-b border-white/[0.06]"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
@@ -43,7 +43,7 @@ export default function Navigation() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
                 whileHover={{ scale: 1.1 }}
-                className="text-gray-300 hover:text-white transition-colors duration-300"
+                className="text-gray-400 hover:text-white transition-colors duration-300 text-sm font-medium tracking-wide"
               >
                 {item.name}
               </motion.a>
@@ -68,14 +68,14 @@ export default function Navigation() {
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: 'auto' }}
           exit={{ opacity: 0, height: 0 }}
-          className="md:hidden glass"
+          className="md:hidden bg-black/80 backdrop-blur-md border-t border-white/[0.06]"
         >
           <div className="px-2 pt-2 pb-3 space-y-1">
             {menuItems.map((item) => (
               <a
                 key={item.name}
                 href={item.href}
-                className="block px-3 py-2 text-gray-300 hover:text-white transition-colors duration-300"
+                className="block px-3 py-2 text-gray-400 hover:text-white transition-colors duration-300"
                 onClick={() => setIsOpen(false)}
               >
                 {item.name}
