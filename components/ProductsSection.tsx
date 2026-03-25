@@ -11,7 +11,7 @@ const products = [
     title: 'Aboyeur',
     tagline: 'AI Kitchen Display System',
     description:
-      'Replaced the legacy KDS hardware at a major high-end grocery chain with a real-time AI order management system. 16,789+ orders processed without a single failure. Enterprise SaaS deal in motion for all 14 stores.',
+      'Replaced the legacy KDS hardware at a major high-end grocery chain with a real-time AI order management system. 32,497+ orders processed across 67 days without a single failure. Enterprise SaaS deal in motion for all 14 stores.',
     status: 'LIVE',
     statusClass: 'text-green-400',
     dotClass: 'dot-live',
@@ -20,7 +20,7 @@ const products = [
     size: 'large',
     github: null,
     link: null,
-    metric: { value: '16,789+', label: 'orders processed' },
+    metric: { value: '32,497+', label: 'orders processed' },
   },
   {
     id: 'nexus',

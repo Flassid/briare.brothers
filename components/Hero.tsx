@@ -90,7 +90,7 @@ export default function Hero() {
         >
           {[
             { value: '4', label: 'Products Shipped' },
-            { value: '16,789+', label: 'Orders Processed' },
+            { value: '32,497+', label: 'Orders Processed' },
             { value: '0', label: 'Outside Funding' },
           ].map((stat, i) => (
             <div key={i} className="bg-white/[0.02] hover:bg-white/[0.04] transition-colors px-6 py-8 text-center">
