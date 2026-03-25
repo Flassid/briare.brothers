@@ -93,11 +93,11 @@ export default function Hero() {
             { value: '32,497+', label: 'Orders Processed' },
             { value: '0', label: 'Outside Funding' },
           ].map((stat, i) => (
-            <div key={i} className="bg-white/[0.02] hover:bg-white/[0.04] transition-colors px-6 py-8 text-center">
-              <div className="text-3xl md:text-4xl font-black tracking-tight gradient-text-color mb-1 stat-number">
+            <div key={i} className="bg-white/[0.02] hover:bg-white/[0.04] transition-colors px-3 py-6 text-center">
+              <div className="text-xl sm:text-2xl md:text-3xl font-black tracking-tight gradient-text-color mb-1 stat-number leading-none">
                 {stat.value}
               </div>
-              <div className="text-xs text-zinc-500 uppercase tracking-widest">{stat.label}</div>
+              <div className="text-[10px] sm:text-xs text-zinc-500 uppercase tracking-widest mt-1">{stat.label}</div>
             </div>
           ))}
         </motion.div>
